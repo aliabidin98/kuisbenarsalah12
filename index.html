@@ -59,18 +59,21 @@
     z-index:5; transform:translateX(-1px);
   }
 
-  /* ---- Zones (color wash on check) ---- */
+  /* ---- Zones (color wash) ---- */
   .zone{
     position:absolute; top:0; bottom:0; width:50%;
     transition:background .4s ease;
     z-index:4; pointer-events:none;
   }
-  #zoneA{left:0; background:rgba(34,197,94,0);}
-  #zoneB{left:50%; background:rgba(239,68,68,0);}
-  #zoneA.correct{background:rgba(34,197,94,.38);}
-  #zoneA.wrong{background:rgba(239,68,68,.38);}
-  #zoneB.correct{background:rgba(34,197,94,.38);}
-  #zoneB.wrong{background:rgba(239,68,68,.38);}
+  /* Latar hijau dan merah permanen tipis di kamera sesuai Benar dan Salah */
+  #zoneA{left:0; background:linear-gradient(90deg, rgba(34,197,94,.25) 0%, rgba(34,197,94,0) 90%);}
+  #zoneB{left:50%; background:linear-gradient(270deg, rgba(239,68,68,.25) 0%, rgba(239,68,68,0) 90%);}
+  
+  /* Latar menyala terang saat jawaban diperiksa */
+  #zoneA.correct{background:rgba(34,197,94,.5);}
+  #zoneA.wrong{background:rgba(239,68,68,.5);}
+  #zoneB.correct{background:rgba(34,197,94,.5);}
+  #zoneB.wrong{background:rgba(239,68,68,.5);}
 
   /* ---- Area atas ---- */
   #topArea{
@@ -79,13 +82,18 @@
   }
   #qbox{
     background:rgba(7,11,20,.95);
-    padding:54px 40px 5px;
-    display:flex; flex-direction:column; align-items:center; gap:3px;
+    padding:24px 40px 12px;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
     text-align:center;
   }
   #qcounter{
     font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:.78rem;
     color:var(--muted); letter-spacing:.5px;
+  }
+  #qimg{
+    max-height: 180px; max-width: 90%; border-radius: 12px;
+    object-fit: contain; border: 1px solid rgba(255,255,255,0.15);
+    margin: 4px 0; display: none;
   }
   #qtext{
     font-family:'Space Grotesk',sans-serif; font-weight:700;
@@ -125,12 +133,13 @@
 
   /* ---- Timer badge ---- */
   #timerBadge{
-    position:absolute; top:16px; left:16px; z-index:17;
-    width:60px; height:60px; border-radius:50%;
+    position:absolute; top:50%; left:50%; margin-top:-30px; margin-left:-30px; /* Posisi tepat di tengah layar */
+    z-index:17; width:60px; height:60px; border-radius:50%;
     background:rgba(7,11,20,.9); border:3px solid var(--a);
     display:flex; align-items:center; justify-content:center;
     font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.5rem;
     color:var(--text); transition:border-color .25s ease, color .25s ease;
+    box-shadow:0 4px 12px rgba(0,0,0,.5); /* Tambahan bayangan agar lebih menonjol */
   }
   #timerBadge.urgent{border-color:var(--wrong); color:var(--wrong); animation:tickPulse .5s infinite alternate;}
   #timerBadge.done{border-color:var(--correct); color:var(--correct);}
@@ -318,19 +327,24 @@
   /* ---- Presets Styles ---- */
   .mxp-card{margin-top:16px; padding:18px 20px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); text-align:left;}
   .mxp-title{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:1.05rem;}
-  .mxp-hint{color:var(--muted); font-size:.85rem; margin-top:4px;}
-  .mxp-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;}
-  .mxp-field label{display:block; font-size:.78rem; color:var(--muted); margin-bottom:4px;}
-  .mxp-field select, .mxp-field input[type="number"]{width:100%; height:42px; border-radius:10px; border:1px solid rgba(255,255,255,.18); background:#0D1424; color:var(--text); padding:0 10px; font-family:'Inter',sans-serif; font-size:.92rem;}
-  .mxp-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
-  .mxp-btn{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:.92rem; border:none; padding:12px 20px; border-radius:999px; cursor:pointer; background:var(--a); color:#fff;}
-  .mxp-btn:hover{filter:brightness(1.08);}
-  .mxp-btn.secondary{background:rgba(255,255,255,.1); color:var(--text); border:1px solid rgba(255,255,255,.16);}
-  .mxp-status{font-size:.82rem; color:var(--muted); margin-top:10px;}
-  
+
+  /* Tab Sesi / Level */
+  .mx-session-grid{display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; margin-top:12px;}
+  .mx-session-btn{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:.85rem;
+    padding:10px 4px; border-radius:12px; border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.06); color:var(--text); cursor:pointer; text-align:center;
+    transition:all .2s ease;
+  }
+  .mx-session-btn:hover{background:rgba(255,255,255,.14);}
+  .mx-session-btn.active{background:var(--a); border-color:var(--a); color:#fff;}
+  .mx-img-preview-box{display:flex; align-items:center; gap:12px; margin-top:6px;}
+  .mx-img-preview{width:70px; height:50px; border-radius:8px; object-fit:cover; border:1px solid rgba(255,255,255,.2); display:none; background:#000;}
+
   @media (max-width:900px){ #mxStart{padding-top:76px;} }
   @media (max-width:860px){ #mxGameBtns .mx-game-btn{padding:9px 14px; font-size:.82rem;} }
   @media (max-width:720px){
+    .mx-session-grid{grid-template-columns:repeat(3, 1fr);}
     .mx-sheet{padding:28px 20px 24px;}
     .mx-tile{display:none;}
     .mx-q{grid-template-columns:32px 1fr;}
@@ -370,7 +384,8 @@
 
   <div id="topArea">
     <div id="qbox">
-      <div id="qcounter">SOAL <span id="qNum">1</span> / <span id="qTotal">10</span></div>
+      <div id="qcounter"><span id="qSessionBadge">SESI 1</span> &bull; SOAL <span id="qNum">1</span> / <span id="qTotal">10</span></div>
+      <img id="qimg" alt="Gambar Soal">
       <div id="qtext"></div>
     </div>
 
@@ -404,6 +419,9 @@
     <h2>Kuis Selesai!</h2>
     <p>Seluruh soal telah dibahas. Klik tombol di bawah untuk mengulang dari soal pertama.</p>
     <button class="btn" id="restartBtn" style="background:var(--a); padding:14px 28px; font-size:1rem;">Mulai Ulang</button>
+    <div style="margin-top:16px; font-size:.85rem; color:var(--muted);">
+      Dibuat oleh <strong>M. Nur Ali Abidin, S.Pd.</strong> &bull; IG: @aliabidin988 &bull; TikTok: @aliabidin98
+    </div>
   </div>
 </div>
 
@@ -415,12 +433,27 @@
     <h1 class="mx-title">Kuis Benar / Salah</h1>
     <p class="mx-sub">Siswa memilih sisi BENAR di kiri atau SALAH di kanan layar.</p>
 
+    <!-- Pilihan Sesi 1-5 -->
+
     <div class="mx-play">
       <div class="mx-tile a">BENAR</div>
       <button type="button" class="mx-btn go" id="mxPlay">Mulai kuis</button>
       <div class="mx-tile b">SALAH</div>
     </div>
     <p class="mx-summary" id="mxSummary"></p>
+
+    <div class="mx-card">
+      <div class="mx-card-title">Pilih Sesi Soal</div>
+      <div class="mx-hint">Pilih tingkat/sesi soal yang ingin dimainkan.</div>
+      <div class="mx-session-grid" id="mxStartSessionGrid">
+        <button type="button" class="mx-session-btn active" data-sesi="1">Sesi 1</button>
+        <button type="button" class="mx-session-btn" data-sesi="2">Sesi 2</button>
+        <button type="button" class="mx-session-btn" data-sesi="3">Sesi 3</button>
+        <button type="button" class="mx-session-btn" data-sesi="4">Sesi 4</button>
+        <button type="button" class="mx-session-btn" data-sesi="5">Sesi 5</button>
+      </div>
+    </div>
+    
 
     <div class="mx-card">
       <div class="mx-card-row">
@@ -448,24 +481,42 @@
         <div>
           <select id="mxAutoNextSelect" class="mx-select">
             <option value="0">Manual (Klik Next)</option>
-            <option value="2">Otomatis (2 detik)</option>
-            <option value="3" selected>Otomatis (3 detik)</option>
-            <option value="5">Otomatis (5 detik)</option>
+            <option value="3">Otomatis (3 detik)</option>
+            <option value="5" selected>Otomatis (5 detik)</option>
+            <option value="7">Otomatis (7 detik)</option>
           </select>
         </div>
       </div>
     </div>
-    
+
+    <div class="mx-card" id="mxEditCardWrap">
+      <div class="mx-card-row">
+        <div>
+          <div class="mx-card-title">Daftar Soal</div>
+          <div class="mx-hint">Edit, tambah, hapus, atau atur kunci jawaban & gambar soal.</div>
+        </div>
+        <div>
+          <button type="button" class="mx-btn" id="mxEditBtn">Edit soal</button>
+        </div>
+      </div>
+    </div>
+
     <div class="mx-actions">
-      <button type="button" class="mx-btn" id="mxEditBtn">Edit soal</button>
       <button type="button" class="mx-btn" id="mxCamBtn">Aktifkan kamera</button>
     </div>
     <p id="mxCamStatus" role="status" aria-live="polite"></p>
-    
+
     <div class="mx-links">
       <button type="button" class="mx-link" id="mxImportS">Impor (.json / .xlsx)</button>
       <button type="button" class="mx-link" id="mxExportJSONS">Ekspor JSON</button>
       <button type="button" class="mx-link" id="mxExportXLSXS">Ekspor Excel (.xlsx)</button>
+    </div>
+
+    <!-- FOOTER KREDIT PEMBUAT -->
+    <div style="margin-top:24px; padding-top:16px; border-top:1px solid rgba(255,255,255,.1); text-align:center; font-size:.85rem; color:var(--muted); line-height:1.6;">
+      Dibuat oleh <strong style="color:var(--text);">M. Nur Ali Abidin, S.Pd.</strong><br>
+      <a href="https://instagram.com/aliabidin988" target="_blank" rel="noopener" style="color:#93C5FD; text-decoration:none; margin-right:8px;">Instagram: @aliabidin988</a> | 
+      <a href="https://www.tiktok.com/@aliabidin98" target="_blank" rel="noopener" style="color:#93C5FD; text-decoration:none; margin-left:8px;">TikTok: @aliabidin98</a>
     </div>
   </div>
 </div>
@@ -488,6 +539,19 @@
       <button type="button" class="mx-fs" id="mxFsEd" title="Layar penuh" aria-label="Layar penuh"></button>
     </div>
   </div>
+
+  <!-- Tab Navigasi Sesi di Editor -->
+  <div style="background:#0D1424; padding:10px 24px; border-bottom:1px solid rgba(255,255,255,.1); display:flex; align-items:center; gap:12px;">
+    <span style="font-size:.85rem; color:var(--muted); font-weight:600;">Edit Sesi:</span>
+    <div class="mx-session-grid" id="mxEdSessionGrid" style="margin-top:0; flex:1; max-width:550px;">
+      <button type="button" class="mx-session-btn active" data-sesi="1">Sesi 1</button>
+      <button type="button" class="mx-session-btn" data-sesi="2">Sesi 2</button>
+      <button type="button" class="mx-session-btn" data-sesi="3">Sesi 3</button>
+      <button type="button" class="mx-session-btn" data-sesi="4">Sesi 4</button>
+      <button type="button" class="mx-session-btn" data-sesi="5">Sesi 5</button>
+    </div>
+  </div>
+
   <div class="mx-ed-scroll" id="mxScroll">
     <div class="mx-ed-inner">
       <div id="mxList"></div>
@@ -516,21 +580,48 @@
     </div>
   </div>
 </div>
-
+<!-- ADDONS & EDITOR (Sesi 1-5 + Support Gambar) -->
 <script>
 window.addEventListener('DOMContentLoaded', function(){
-const questions = [
-  {q:"Ibu kota negara Indonesia adalah Jakarta.", answer:true},
-  {q:"Hasil dari 5 \u00d7 6 adalah 35.", answer:false},
-  {q:"CPU merupakan singkatan dari Central Processing Unit.", answer:true},
-  {q:"Matahari terbit dari arah Barat.", answer:false},
-  {q:"Air akan berubah menjadi es apabila dipanaskan.", answer:false},
-  {q:"Planet terbesar di tata surya kita adalah Jupiter.", answer:true},
-  {q:"Proklamasi Kemerdekaan Indonesia dibacakan pada 17 Agustus 1945.", answer:true},
-  {q:"Keyboard dan Mouse termasuk ke dalam Perangkat Output.", answer:false},
-  {q:"Singa adalah hewan pemakan tumbuhan (Herbivora).", answer:false},
-  {q:"Jaringan komputer global seluruh dunia disebut Internet.", answer:true}
-];
+// Preset Soal per Sesi (Sesi 1 s/d 5)
+const DEFAULT_SESSIONS = {
+  1: [
+    {q:"Ibu kota negara Indonesia adalah Jakarta.", answer:true, img:""},
+    {q:"Hasil dari 5 \u00d7 6 adalah 35.", answer:false, img:""},
+    {q:"Matahari terbit dari arah Barat.", answer:false, img:""},
+    {q:"Kucing adalah hewan mamalia menyusui.", answer:true, img:""},
+    {q:"Warna bendera Indonesia adalah Merah dan Putih.", answer:true, img:""}
+  ],
+  2: [
+    {q:"Air akan membeku menjadi es pada suhu 0 derajat Celsius.", answer:true, img:""},
+    {q:"CPU merupakan singkatan dari Central Processing Unit.", answer:true, img:""},
+    {q:"Planet terbesar di tata surya kita adalah Venus.", answer:false, img:""},
+    {q:"Singa adalah hewan pemakan tumbuhan (Herbivora).", answer:false, img:""},
+    {q:"Proklamasi Kemerdekaan Indonesia dibacakan pada 17 Agustus 1945.", answer:true, img:""}
+  ],
+  3: [
+    {q:"Keyboard dan Mouse termasuk ke dalam Perangkat Output.", answer:false, img:""},
+    {q:"Jaringan komputer global seluruh dunia disebut Internet.", answer:true, img:""},
+    {q:"Rumus kimia dari air adalah CO2.", answer:false, img:""},
+    {q:"Candi Borobudur terletak di provinsi Jawa Tengah.", answer:true, img:""},
+    {q:"Lagu kebangsaan Indonesia adalah Indonesia Raya.", answer:true, img:""}
+  ],
+  4: [
+    {q:"Sudut siku-siku memiliki besar 90 derajat.", answer:true, img:""},
+    {q:"Benua terkecil di dunia adalah Benua Asia.", answer:false, img:""},
+    {q:"Kecepatan cahaya lebih cepat daripada kecepatan suara.", answer:true, img:""},
+    {q:"Segitiga sama sisi memiliki 3 sudut yang besarnya berbeda-beda.", answer:false, img:""},
+    {q:"Gas nitrogen merupakan gas terbanyak di atmosfer bumi.", answer:true, img:""}
+  ],
+  5: [
+    {q:"Apakah gambar hewan ini bernama Harimau?", answer:true, img:"https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?w=600&auto=format&fit=crop&q=80"},
+    {q:"Apakah ini lambang dari bendera Indonesia?", answer:false, img:"https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=600&auto=format&fit=crop&q=80"},
+    {q:"Buah pada gambar ini berwarna merah saat matang.", answer:true, img:"https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=600&auto=format&fit=crop&q=80"}
+  ]
+};
+
+let currentSession = 1;
+let questions = [];
 
 let idx = 0;
 let checked = false;
@@ -541,6 +632,8 @@ let autoNextTimeout = null;
 
 const qNumEl = document.getElementById('qNum');
 const qtextEl = document.getElementById('qtext');
+const qimgEl = document.getElementById('qimg');
+const qSessionBadge = document.getElementById('qSessionBadge');
 const ansAEl = document.getElementById('ansAText');
 const ansBEl = document.getElementById('ansBText');
 const zoneA = document.getElementById('zoneA');
@@ -572,14 +665,23 @@ function startTimer(){
   }, 1000);
 }
 
-document.getElementById('qTotal').textContent = questions.length;
-
 function loadQuestion(){
-  if(questions.length === 0) return;
+  if(!questions || questions.length === 0) return;
   clearTimeout(autoNextTimeout);
   const item = questions[idx];
   qNumEl.textContent = idx + 1;
-  qtextEl.textContent = item.q;
+  document.getElementById('qTotal').textContent = questions.length;
+  qSessionBadge.textContent = "SESI " + currentSession;
+  qtextEl.textContent = item.q || "";
+
+  // Tampilkan gambar jika ada
+  if(item.img && item.img.trim() !== ''){
+    qimgEl.src = item.img;
+    qimgEl.style.display = 'block';
+  } else {
+    qimgEl.style.display = 'none';
+    qimgEl.src = '';
+  }
   
   // Tombol kiri (Sisi A) selalu BENAR, Tombol kanan (Sisi B) selalu SALAH
   currentCorrectSide = item.answer ? 'a' : 'b';
@@ -760,7 +862,7 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
   setMode('wide');
 })();
 
-// ADDONS & EDITOR
+// ADDONS & EDITOR (Sesi 1-5 + Support Gambar)
 (function(){
   'use strict';
   
@@ -787,18 +889,11 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
       });
   }
 
-  var KEY_Q = 'kuisBK.v3.soal';
+  var KEY_SESSIONS = 'kuisBK.v4.sessions';
   var KEY_T = 'kuisBK.v3.timer';
   var KEY_AUTO = 'kuisBK.v3.autoNext';
   var MIN_T = 3, MAX_T = 120;
   var PRESETS = [5, 10, 15, 20, 30, 60];
-
-  function normSide(v){
-    var s = String(v === undefined || v === null ? '' : v).trim().toLowerCase();
-    if(s === 'a' || s === 'kiri' || s === 'left') return 'a';
-    if(s === 'b' || s === 'kanan' || s === 'right') return 'b';
-    return 'acak';
-  }
 
   function normAnswer(v){
     if(typeof v === 'boolean') return v;
@@ -806,10 +901,10 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     return s === 'benar' || s === 'true' || s === '1' || s === 'ya' || s === 'b';
   }
 
-  function cp(x){ return {q:x.q, answer:normAnswer(x.answer)}; }
+  function cp(x){ return {q:x.q || "", answer:normAnswer(x.answer), img:x.img || ""}; }
 
-  var DEFAULT_BANK = questions.map(function(x){ return cp(x); });
-  var bank = null;
+  var allSessions = null;
+  var edSession = 1;
   window.timerSeconds = 10;
   window.autoNextSeconds = 3;
   var saveTimer = null;
@@ -848,7 +943,8 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     var ansVal = o.answer !== undefined ? o.answer : (o.jawaban !== undefined ? o.jawaban : pick(['correct','benar','Jawaban']));
     return {
       q: pick(['q','pertanyaan','soal','question','Pernyataan']),
-      answer: normAnswer(ansVal)
+      answer: normAnswer(ansVal),
+      img: pick(['img','gambar','image','url_gambar','src'])
     };
   }
   
@@ -859,26 +955,39 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     return Math.min(MAX_T, Math.max(MIN_T, n));
   }
   
-  function isComplete(it){ return it.q.trim() !== ''; }
-  function validBank(){
+  function isComplete(it){ return (it.q.trim() !== '' || (it.img && it.img.trim() !== '')); }
+  
+  function validBank(sId){
+    var bank = allSessions[sId || currentSession] || [];
     return bank.filter(isComplete).map(function(it){
-      return {q:it.q.trim(), answer:it.answer};
+      return {q:it.q.trim(), answer:it.answer, img:it.img || ""};
     });
   }
 
   function load(){
     try{
-      var raw = localStorage.getItem(KEY_Q);
+      var raw = localStorage.getItem(KEY_SESSIONS);
       if(raw){
-        var arr = JSON.parse(raw);
-        if(Array.isArray(arr)) bank = arr.map(norm).filter(Boolean);
+        var parsed = JSON.parse(raw);
+        if(parsed && typeof parsed === 'object'){
+          allSessions = {};
+          [1,2,3,4,5].forEach(s => {
+            allSessions[s] = Array.isArray(parsed[s]) ? parsed[s].map(norm).filter(Boolean) : [];
+          });
+        }
       }
       var t = clampT(localStorage.getItem(KEY_T));
       if(t !== null) window.timerSeconds = t;
       var auto = localStorage.getItem(KEY_AUTO);
       if(auto !== null) window.autoNextSeconds = parseInt(auto);
     }catch(e){}
-    if(!bank) bank = DEFAULT_BANK.map(function(x){ return cp(x); });
+    
+    if(!allSessions){
+      allSessions = {};
+      [1,2,3,4,5].forEach(s => {
+        allSessions[s] = (DEFAULT_SESSIONS[s] || []).map(cp);
+      });
+    }
   }
 
   function setSaved(ok){
@@ -888,7 +997,7 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
   
   function persist(){
     try{
-      localStorage.setItem(KEY_Q, JSON.stringify(bank));
+      localStorage.setItem(KEY_SESSIONS, JSON.stringify(allSessions));
       localStorage.setItem(KEY_T, String(window.timerSeconds));
       localStorage.setItem(KEY_AUTO, String(window.autoNextSeconds));
       setSaved(true);
@@ -953,30 +1062,64 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     persist();
   });
   
-  document.getElementById('mxTMinus').addEventListener('click', function(){ setTimer(Math.max(MIN_T, window.timerSeconds - 1)); });
-  document.getElementById('mxTPlus').addEventListener('click', function(){ setTimer(Math.min(MAX_T, window.timerSeconds + 1)); });
-  tInput.addEventListener('change', function(){
-    var n = clampT(tInput.value);
-    if(n === null) n = window.timerSeconds;
-    setTimer(n);
+  var btnTMinus = document.getElementById('mxTMinus');
+  if (btnTMinus) btnTMinus.addEventListener('click', function(){ setTimer(Math.max(MIN_T, window.timerSeconds - 1)); });
+
+  var btnTPlus = document.getElementById('mxTPlus');
+  if (btnTPlus) btnTPlus.addEventListener('click', function(){ setTimer(Math.min(MAX_T, window.timerSeconds + 1)); });
+
+  if (tInput) {
+    tInput.addEventListener('change', function(){
+      var n = clampT(tInput.value);
+      if(n === null) n = window.timerSeconds;
+      setTimer(n);
+    });
+  }
+
+  // Listener Pilihan Sesi di Menu Utama
+  const startSessionBtns = document.querySelectorAll('#mxStartSessionGrid .mx-session-btn');
+  startSessionBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      startSessionBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentSession = parseInt(btn.dataset.sesi || 1);
+      refreshSummary();
+    });
+  });
+
+  // Listener Pilihan Sesi di Editor
+  const edSessionBtns = document.querySelectorAll('#mxEdSessionGrid .mx-session-btn');
+  edSessionBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      edSessionBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      edSession = parseInt(btn.dataset.sesi || 1);
+      render();
+    });
   });
 
   function refreshSummary(){
-    var n = validBank().length, inc = bank.length - n;
+    var list = validBank(currentSession);
+    var bank = allSessions[currentSession] || [];
+    var n = list.length, inc = bank.length - n;
     if(n === 0){
-      summaryEl.textContent = 'Belum ada soal. Buka Edit soal untuk menambahkan.';
+      summaryEl.textContent = 'Belum ada soal di Sesi ' + currentSession + '. Buka Edit soal untuk menambahkan.';
     } else {
-      summaryEl.textContent = n + ' soal siap dimainkan, ' + window.timerSeconds + ' detik per soal.';
+      summaryEl.textContent = 'Sesi ' + currentSession + ': ' + n + ' soal siap dimainkan, ' + window.timerSeconds + ' detik per soal.';
     }
     summaryEl.classList.toggle('warn', n === 0 || inc > 0);
   }
 
   function refreshCam(){
     var on = camPlaceholder.style.display === 'none';
-    camBtn.textContent = on ? 'Kamera aktif' : 'Aktifkan kamera';
-    camBtn.disabled = on;
+    if(camBtn) {
+      camBtn.textContent = on ? 'Kamera aktif' : 'Aktifkan kamera';
+      camBtn.disabled = on;
+    }
   }
-  camBtn.addEventListener('click', function(){ document.getElementById('startCamBtn').click(); });
+  if(camBtn) {
+    camBtn.addEventListener('click', function(){ document.getElementById('startCamBtn').click(); });
+  }
   ['playing', 'emptied', 'camchange'].forEach(function(ev){ video.addEventListener(ev, refreshCam); });
 
   function showMenu(){
@@ -994,27 +1137,28 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
   }
 
   function applyBank(list){
-    questions.splice(0, questions.length);
-    list.forEach(function(x){ questions.push(x); });
+    questions = list.map(cp);
     document.getElementById('qTotal').textContent = questions.length;
   }
 
   function play(){
     flushSave();
-    var list = validBank();
-    if(!list.length){ toast('Belum ada soal. Buka Edit soal.'); return; }
+    var list = validBank(currentSession);
+    if(!list.length){ toast('Belum ada soal di Sesi ' + currentSession + '. Buka Edit soal.'); return; }
     applyBank(list);
     startEl.style.display = 'none';
     fsStartEl.style.display = 'none';
     resetQuiz();
     gameUI(true);
+    startCamera(); // Otomatis aktifkan kamera
   }
   document.getElementById('mxPlay').addEventListener('click', play);
 
   /* EDITOR */
   function updateInfo(){
+    var bank = allSessions[edSession] || [];
     var inc = bank.filter(function(x){ return !isComplete(x); }).length;
-    edInfo.textContent = bank.length + ' soal ' + (inc > 0 ? '(' + inc + ' belum lengkap)' : '');
+    edInfo.textContent = 'Sesi ' + edSession + ': ' + bank.length + ' soal ' + (inc > 0 ? '(' + inc + ' belum lengkap)' : '');
   }
 
   function field(label, cls, tag, item, key, card){
@@ -1025,7 +1169,7 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     var el = document.createElement(tag);
     el.className = 'mx-in';
     if(tag === 'textarea') el.rows = 2; else el.type = 'text';
-    el.value = item[key];
+    el.value = item[key] || '';
     el.addEventListener('input', function(){
       item[key] = el.value;
       card.classList.toggle('mx-incomplete', !isComplete(item));
@@ -1036,6 +1180,85 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     wrap.appendChild(el);
     return wrap;
   }
+
+  function imageUploadField(item, card){
+    var wrap = document.createElement('div');
+    wrap.className = 'mx-f';
+    var span = document.createElement('span');
+    span.textContent = 'Gambar Soal (URL atau Unggah File)';
+    
+    var row = document.createElement('div');
+    row.style.display = 'flex';
+    row.style.gap = '8px';
+    
+    var urlIn = document.createElement('input');
+    urlIn.type = 'text';
+    urlIn.className = 'mx-in';
+    urlIn.placeholder = 'https://... atau pilih file di kanan';
+    urlIn.value = item.img || '';
+
+    var uploadBtn = document.createElement('button');
+    uploadBtn.type = 'button';
+    uploadBtn.className = 'mx-btn';
+    uploadBtn.style.padding = '8px 12px';
+    uploadBtn.style.fontSize = '.85rem';
+    uploadBtn.textContent = 'Pilih File';
+
+    var fileHidden = document.createElement('input');
+    fileHidden.type = 'file';
+    fileHidden.accept = 'image/*';
+    fileHidden.style.display = 'none';
+
+    var prevBox = document.createElement('div');
+    prevBox.className = 'mx-img-preview-box';
+    var imgPrev = document.createElement('img');
+    imgPrev.className = 'mx-img-preview';
+
+    function updatePreview(){
+      if(item.img && item.img.trim() !== ''){
+        imgPrev.src = item.img;
+        imgPrev.style.display = 'block';
+      } else {
+        imgPrev.style.display = 'none';
+        imgPrev.src = '';
+      }
+    }
+    updatePreview();
+
+    urlIn.addEventListener('input', function(){
+      item.img = urlIn.value;
+      updatePreview();
+      card.classList.toggle('mx-incomplete', !isComplete(item));
+      queueSave();
+    });
+
+    uploadBtn.addEventListener('click', () => fileHidden.click());
+    fileHidden.addEventListener('change', () => {
+      var file = fileHidden.files && fileHidden.files[0];
+      if(file){
+        var reader = new FileReader();
+        reader.onload = function(e){
+          item.img = e.target.result;
+          urlIn.value = item.img;
+          updatePreview();
+          card.classList.toggle('mx-incomplete', !isComplete(item));
+          queueSave();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    row.appendChild(urlIn);
+    row.appendChild(uploadBtn);
+    row.appendChild(fileHidden);
+    prevBox.appendChild(imgPrev);
+
+    wrap.appendChild(span);
+    wrap.appendChild(row);
+    wrap.appendChild(prevBox);
+    return wrap;
+  }
+
   function iconBtn(text, title, cls, disabled, onClick){
     var b = document.createElement('button');
     b.type = 'button';
@@ -1047,6 +1270,7 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     return b;
   }
   function move(i, d){
+    var bank = allSessions[edSession];
     var j = i + d;
     if(j < 0 || j >= bank.length) return;
     var t = bank[i]; bank[i] = bank[j]; bank[j] = t;
@@ -1054,6 +1278,7 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     queueSave();
   }
   function remove(i){
+    var bank = allSessions[edSession];
     var removed = bank.splice(i, 1)[0];
     render();
     queueSave();
@@ -1064,7 +1289,8 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     });
   }
   function addQuestion(){
-    bank.push({q:'', answer:true});
+    if(!allSessions[edSession]) allSessions[edSession] = [];
+    allSessions[edSession].push({q:'', answer:true, img:''});
     render();
     queueSave();
     scrollEl.scrollTop = scrollEl.scrollHeight;
@@ -1073,10 +1299,12 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
   function render(){
     var keep = scrollEl.scrollTop;
     listEl.textContent = '';
+    var bank = allSessions[edSession] || [];
+
     if(!bank.length){
       var p = document.createElement('p');
       p.className = 'mx-empty';
-      p.textContent = 'Belum ada soal. Tambahkan soal baru atau impor file Excel/JSON.';
+      p.textContent = 'Belum ada soal di Sesi ' + edSession + '. Klik Tambah Soal untuk menambahkan.';
       listEl.appendChild(p);
     }
     bank.forEach(function(item, i){
@@ -1090,6 +1318,7 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
       var body = document.createElement('div');
       body.className = 'mx-q-body';
       body.appendChild(field('Pernyataan Soal', '', 'textarea', item, 'q', card));
+      body.appendChild(imageUploadField(item, card));
 
       // Pilihan Kunci Jawaban (Benar / Salah)
       var ansWrap = document.createElement('div');
@@ -1134,14 +1363,27 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
     scrollEl.scrollTop = keep;
   }
 
-  document.getElementById('mxEditBtn').addEventListener('click', function(){
+  document.getElementById('mxEditBtn').addEventListener('click', function(e){
+    if (e) e.stopPropagation();
     startEl.style.display = 'none';
     fsStartEl.style.display = 'none';
     gameUI(false);
     edEl.style.display = 'flex';
+    edSession = currentSession;
+    
+    // Sync tab aktif di editor
+    edSessionBtns.forEach(b => b.classList.toggle('active', parseInt(b.dataset.sesi) === edSession));
+    
     setSaved(true);
     render();
   });
+  
+  var editWrap = document.getElementById('mxEditCardWrap');
+  if (editWrap) {
+     editWrap.addEventListener('click', function() {
+         document.getElementById('mxEditBtn').click();
+     });
+  }
   
   document.getElementById('mxEdBack').addEventListener('click', function(){
     flushSave();
@@ -1156,28 +1398,28 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
   document.getElementById('mxAddBottom').addEventListener('click', addQuestion);
   
   document.getElementById('mxResetE').addEventListener('click', function(){
-    customConfirm('Kembalikan Soal', 'Kembalikan ke soal bawaan? Semua perubahan soal saat ini akan hilang.', () => {
-      bank = DEFAULT_BANK.map(function(x){ return cp(x); });
+    customConfirm('Kembalikan Soal Sesi ' + edSession, 'Kembalikan Sesi ' + edSession + ' ke soal awal bawaan?', () => {
+      allSessions[edSession] = (DEFAULT_SESSIONS[edSession] || []).map(cp);
       render();
       persist();
-      toast('Soal dikembalikan ke awal.');
+      toast('Soal Sesi ' + edSession + ' dikembalikan ke awal.');
     });
   });
 
   // EXPORT JSON & EXCEL
   function exportJSON(){
     flushSave();
-    var data = { timer: window.timerSeconds, autoNext: window.autoNextSeconds, questions: bank.map(function(x){ return cp(x); }) };
+    var data = { timer: window.timerSeconds, autoNext: window.autoNextSeconds, sessions: allSessions };
     var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;
-    a.download = 'soal-kuis-benar-salah.json';
+    a.download = 'soal-kuis-benar-salah-5sesi.json';
     document.body.appendChild(a);
     a.click();
     a.remove();
     setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
-    toast(bank.length + ' soal diekspor ke file JSON.');
+    toast('Seluruh Sesi 1-5 diekspor ke file JSON.');
   }
 
   function exportXLSX(){
@@ -1186,37 +1428,56 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
       toast('Library Excel belum dimuat dengan sempurna.');
       return;
     }
-    var rows = bank.map(function(item, index){
-      return {
-        "No": index + 1,
-        "Pernyataan": item.q,
-        "Jawaban": item.answer ? "Benar" : "Salah"
-      };
-    });
-    var worksheet = XLSX.utils.json_to_sheet(rows);
     var workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Soal Kuis");
-    XLSX.writeFile(workbook, "soal-kuis-benar-salah.xlsx");
-    toast(bank.length + ' soal diekspor ke Excel (.xlsx).');
+    [1,2,3,4,5].forEach(sId => {
+      var bank = allSessions[sId] || [];
+      var rows = bank.map(function(item, index){
+        return {
+          "No": index + 1,
+          "Pernyataan": item.q,
+          "Jawaban": item.answer ? "Benar" : "Salah",
+          "URL Gambar": item.img || ""
+        };
+      });
+      var worksheet = XLSX.utils.json_to_sheet(rows);
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sesi " + sId);
+    });
+    XLSX.writeFile(workbook, "soal-kuis-benar-salah-5sesi.xlsx");
+    toast('Seluruh Sesi diekspor ke Excel (.xlsx).');
   }
 
   // IMPORT FILE (JSON & EXCEL)
   function handleImportText(text){
     var data = JSON.parse(text.replace(/^\uFEFF/, ''));
+    if(data && data.sessions && typeof data.sessions === 'object'){
+      customConfirm('Impor Soal', `File JSON berisi data multi-sesi. Impor seluruh sesi?`, () => {
+        [1,2,3,4,5].forEach(s => {
+          if(Array.isArray(data.sessions[s])){
+            allSessions[s] = data.sessions[s].map(norm).filter(Boolean);
+          }
+        });
+        if(data.timer) window.timerSeconds = clampT(data.timer) || window.timerSeconds;
+        persist();
+        syncTimerUI();
+        if(edEl.style.display !== 'none') render();
+        refreshSummary();
+        toast('Impor 5 Sesi berhasil.');
+      });
+      return;
+    }
+
     var arr = Array.isArray(data) ? data : (data && (data.questions || data.soal));
     if(!Array.isArray(arr)) throw new Error('Bentuk file tidak dikenali');
     var list = arr.map(norm).filter(Boolean);
     if(!list.length){ toast('File tidak berisi soal.'); return; }
     
-    customConfirm('Impor Soal', `Impor akan mengganti ${bank.length} soal saat ini dengan ${list.length} soal dari file. Lanjutkan?`, () => {
-        bank = list;
-        var t = (data && !Array.isArray(data)) ? clampT(data.timer !== undefined ? data.timer : data.waktu) : null;
-        if(t !== null) window.timerSeconds = t;
+    customConfirm('Impor Soal Sesi ' + edSession, `Ganti soal Sesi ${edSession} dengan ${list.length} soal dari file?`, () => {
+        allSessions[edSession] = list;
         persist();
         syncTimerUI();
         if(edEl.style.display !== 'none') render();
         refreshSummary();
-        toast(list.length + ' soal berhasil diimpor.');
+        toast(list.length + ' soal diimpor ke Sesi ' + edSession + '.');
     });
   }
 
@@ -1226,21 +1487,41 @@ document.getElementById('startCamBtn').addEventListener('click', startCamera);
       return;
     }
     var workbook = XLSX.read(arrayBuffer, {type: 'array'});
-    var firstSheetName = workbook.SheetNames[0];
-    var worksheet = workbook.Sheets[firstSheetName];
-    var json = XLSX.utils.sheet_to_json(worksheet);
     
-    var list = json.map(norm).filter(Boolean);
-    if(!list.length){ toast('File Excel tidak berisi data soal yang valid.'); return; }
-
-    customConfirm('Impor Excel', `Impor akan mengganti ${bank.length} soal saat ini dengan ${list.length} soal dari Excel. Lanjutkan?`, () => {
-        bank = list;
+    // Cek apakah Excel punya sheet bernama "Sesi 1", "Sesi 2", dll
+    var hasMultiSession = workbook.SheetNames.some(name => name.toLowerCase().includes('sesi'));
+    
+    if(hasMultiSession){
+      customConfirm('Impor Excel Multi-Sesi', `Impor seluruh sheet Sesi ke dalam kuis?`, () => {
+        workbook.SheetNames.forEach(sheetName => {
+          var match = sheetName.match(/\d+/);
+          var sId = match ? parseInt(match[0]) : null;
+          if(sId && sId >= 1 && sId <= 5){
+            var json = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+            allSessions[sId] = json.map(norm).filter(Boolean);
+          }
+        });
         persist();
         syncTimerUI();
         if(edEl.style.display !== 'none') render();
         refreshSummary();
-        toast(list.length + ' soal Excel berhasil diimpor.');
-    });
+        toast('Excel Multi-Sesi berhasil diimpor.');
+      });
+    } else {
+      var firstSheetName = workbook.SheetNames[0];
+      var json = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName]);
+      var list = json.map(norm).filter(Boolean);
+      if(!list.length){ toast('File Excel tidak berisi data soal yang valid.'); return; }
+
+      customConfirm('Impor Excel ke Sesi ' + edSession, `Ganti soal Sesi ${edSession} dengan ${list.length} soal dari Excel?`, () => {
+          allSessions[edSession] = list;
+          persist();
+          syncTimerUI();
+          if(edEl.style.display !== 'none') render();
+          refreshSummary();
+          toast(list.length + ' soal Excel berhasil diimpor ke Sesi ' + edSession + '.');
+      });
+    }
   }
 
   fileEl.addEventListener('change', function(){
